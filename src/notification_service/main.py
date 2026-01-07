@@ -7,5 +7,9 @@ def send_notification(user_id: str) -> None:
     logger.info("notification_sent", user_id=user_id)
 
 
-if __name__ == "__main__":
+def main() -> None:
     send_notification("user-123")
+
+
+if __name__ == "__main__":
+    main()
