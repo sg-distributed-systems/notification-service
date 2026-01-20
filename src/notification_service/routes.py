@@ -6,13 +6,22 @@ delegate to core business logic functions.
 """
 from fastapi import APIRouter
 
-from .main import send_notification
 from .schemas import SendNotificationRequest, SendNotificationResponse
+from .service import send_notification
 
 router = APIRouter()
 
 
-@router.post("/notifications/send", response_model=SendNotificationResponse)
+@router.post("/notifications/send", response_model=SendNotificationResponse, status_code=200)
 def send_notification_route(req: SendNotificationRequest) -> SendNotificationResponse:
-    send_notification(req.user_id)
-    return SendNotificationResponse(status="ok")
+    result = send_notification(
+        recipient_id=req.recipient_id,
+        channel=req.channel,
+        template_id=req.template_id,
+        variables=req.variables,
+    )
+    return SendNotificationResponse(
+        notification_id=result["notification_id"],
+        status=result["status"],
+        queued_at=result["queued_at"],
+    )
