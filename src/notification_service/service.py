@@ -58,3 +58,21 @@ def get_notification_status(notification_id: UUID) -> dict:
         "status": "delivered",
         "delivered_at": datetime.utcnow(),
     }
+
+
+def retry_notification(notification_id: UUID, max_attempts: int = 3) -> dict:
+    logger.info(
+        "notification_retry_requested",
+        notification_id=str(notification_id),
+        max_attempts=max_attempts,
+    )
+
+    if max_attempts < 1:
+        raise ValidationError("invalid_max_attempts", details={"max_attempts": max_attempts})
+
+    logger.info("notification_requeued", notification_id=str(notification_id))
+    return {
+        "notification_id": notification_id,
+        "status": "requeued",
+        "requeued_at": datetime.utcnow(),
+    }
