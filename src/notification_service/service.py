@@ -7,11 +7,11 @@ template rendering, variable substitution, and delivery status tracking.
 from datetime import datetime
 from uuid import UUID, uuid4
 
-from core_logger import get_logger
+from core_logger import Tier, get_logger
 
 from .errors import NotFoundError, ValidationError
 
-logger = get_logger("notification-service")
+logger = get_logger("notification-service", tier=Tier.BUSINESS)
 
 VALID_CHANNELS = {"email", "sms", "push", "slack"}
 TEMPLATES = {"welcome", "order_confirmation", "password_reset", "payment_receipt"}
